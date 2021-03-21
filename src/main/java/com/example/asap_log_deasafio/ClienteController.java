@@ -1,10 +1,10 @@
-package com.example.controller;
+package com.example.asap_log_deasafio;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.entity.Cliente;
-import com.example.service.ClienteService;
+import com.example.asap_log_deasafio.entity.Cliente;
+import com.example.asap_log_deasafio.service.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +30,10 @@ class ClienteController {
     ClienteService clienteService;
 
     @ApiOperation(value = "consulta todos os clientes")
-    @GetMapping
+    @GetMapping("/lista")
     public ResponseEntity<List<Cliente>> getAll() {
         try {
+            System.out.println("LISTAR TUDO");
             List<Cliente> items = clienteService.consultarClientes();
 
             if (items.isEmpty())

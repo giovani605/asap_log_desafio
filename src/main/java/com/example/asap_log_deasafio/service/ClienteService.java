@@ -1,13 +1,15 @@
-package com.example.service;
+package com.example.asap_log_deasafio.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.entity.Cliente;
-import com.example.repository.ClienteRepository;
+import com.example.asap_log_deasafio.entity.Cliente;
+import com.example.asap_log_deasafio.repository.ClienteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClienteService {
 
     @Autowired
