@@ -1,8 +1,10 @@
-package packageName;
+package com.example.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.entity.Cliente;
+import com.example.service.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,19 +18,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/clientes")
+@Api(value = "Clientes")
 class ClienteController {
 
     @Autowired
-    ClienteService repository;
+    ClienteService clienteService;
 
+    @ApiOperation(value = "consulta todos os clientes")
     @GetMapping
     public ResponseEntity<List<Cliente>> getAll() {
         try {
-            List<Cliente> items = new ArrayList<Cliente>();
-
-            repository.findAll().forEach(items::add);
+            List<Cliente> items = clienteService.consultarClientes();
 
             if (items.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -40,8 +45,8 @@ class ClienteController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Cliente> getById(@PathVariable("id") entityIdType id) {
-        Optional<Cliente> existingItemOptional = repository.findById(id);
+    public ResponseEntity<Cliente> getById(@PathVariable("id") String id) {
+        Optional<Cliente> existingItemOptional = clienteService.consultarClienteId(id);
 
         if (existingItemOptional.isPresent()) {
             return new ResponseEntity<>(existingItemOptional.get(), HttpStatus.OK);
@@ -53,30 +58,34 @@ class ClienteController {
     @PostMapping
     public ResponseEntity<Cliente> create(@RequestBody Cliente item) {
         try {
-            Cliente savedItem = repository.save(item);
+            Cliente savedItem = clienteService.salvarCliente(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Cliente> update(@PathVariable("id") entityIdType id, @RequestBody Cliente item) {
-        Optional<Cliente> existingItemOptional = repository.findById(id);
-        if (existingItemOptional.isPresent()) {
-            Cliente existingItem = existingItemOptional.get();
-            System.out.println("TODO for developer - update logic is unique to entity and must be implemented manually.");
-            //existingItem.setSomeField(item.getSomeField());
-            return new ResponseEntity<>(repository.save(existingItem), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    private void validarCliente(Cliente cliente) throws Exception {
+        if (cliente.getNome() == null) {
+            throw new Exception("Nome do cliente obrigatório.");
+        }
+
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Cliente> update(@RequestBody Cliente cliente) {
+        try {
+            Cliente savedItem = this.clienteService.atualizarCliente(cliente);
+            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") entityIdType id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
         try {
-            repository.deleteById(id);
+            clienteService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
