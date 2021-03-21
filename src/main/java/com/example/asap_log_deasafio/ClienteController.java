@@ -31,23 +31,16 @@ public class ClienteController {
 
     @ApiOperation(value = "consulta todos os clientes")
     @GetMapping("")
-    public ResponseEntity<List<Cliente>> getAll() {
-        try {
-            List<Cliente> items = clienteService.consultarClientes();
-
-            if (items.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<Cliente>> getAll() throws Exception {
+        List<Cliente> items = clienteService.consultarClientes();
+        if (items.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Cliente> getById(@PathVariable("id") String id) {
+    public ResponseEntity<Cliente> getById(@PathVariable("id") String id) throws Exception {
         Optional<Cliente> existingItemOptional = clienteService.consultarClienteId(id);
-
         if (existingItemOptional.isPresent()) {
             return new ResponseEntity<>(existingItemOptional.get(), HttpStatus.OK);
         } else {
@@ -57,31 +50,19 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> create(@RequestBody Cliente item) throws Exception {
-        try {
-            Cliente savedItem = clienteService.salvarCliente(item);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            throw e;
-        }
+        Cliente savedItem = clienteService.salvarCliente(item);
+        return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public ResponseEntity<Cliente> update(@RequestBody Cliente cliente) {
-        try {
-            Cliente savedItem = this.clienteService.atualizarCliente(cliente);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<Cliente> update(@RequestBody Cliente cliente) throws Exception {
+        Cliente savedItem = this.clienteService.atualizarCliente(cliente);
+        return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
-        try {
-            clienteService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) throws Exception {
+        clienteService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

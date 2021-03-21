@@ -32,21 +32,17 @@ public class ApoliceController {
 
     @ApiOperation(value = "consulta todos os clientes")
     @GetMapping("")
-    public ResponseEntity<List<Apolice>> getAll() {
-        try {
-            List<Apolice> items = apoliceService.consultarApolices();
+    public ResponseEntity<List<Apolice>> getAll() throws Exception {
+        List<Apolice> items = apoliceService.consultarApolices();
 
-            if (items.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (items.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Apolice> getById(@PathVariable("id") String id) {
+    public ResponseEntity<Apolice> getById(@PathVariable("id") String id) throws Exception {
         Optional<Apolice> existingItemOptional = apoliceService.consultarApoliceId(id);
 
         if (existingItemOptional.isPresent()) {
@@ -57,44 +53,26 @@ public class ApoliceController {
     }
 
     @GetMapping("consultar/{id}")
-    public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") String id) {
-        try {
-            ApoliceStatus apolice = apoliceService.consultarResultadoApolice(id);
-            return new ResponseEntity<>(apolice, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+    public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") String id) throws Exception {
+        ApoliceStatus apolice = apoliceService.consultarResultadoApolice(id);
+        return new ResponseEntity<>(apolice, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Apolice> createApolice(@RequestBody Apolice item) throws Exception {
-        try {
-            Apolice savedItem = apoliceService.salvarApolice(item);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            throw e;
-        }
+        Apolice savedItem = apoliceService.salvarApolice(item);
+        return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public ResponseEntity<Apolice> update(@RequestBody Apolice cliente) {
-        try {
-            Apolice savedItem = this.apoliceService.atualizarApolice(cliente);
-            return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<Apolice> update(@RequestBody Apolice cliente) throws Exception {
+        Apolice savedItem = this.apoliceService.atualizarApolice(cliente);
+        return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
-        try {
-            apoliceService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) throws Exception {
+        apoliceService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
