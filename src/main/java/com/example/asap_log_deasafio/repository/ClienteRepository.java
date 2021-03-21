@@ -10,4 +10,6 @@ public interface ClienteRepository extends MongoRepository<Cliente, String> {
 
     List<Cliente> findByCpf(String cpf);
 
+    List<Cliente> findByCpfAndIdNot(String cpf, String id);
+
 }

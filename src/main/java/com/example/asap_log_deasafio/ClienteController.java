@@ -33,7 +33,6 @@ class ClienteController {
     @GetMapping("")
     public ResponseEntity<List<Cliente>> getAll() {
         try {
-            System.out.println("LISTAR TUDO");
             List<Cliente> items = clienteService.consultarClientes();
 
             if (items.isEmpty())

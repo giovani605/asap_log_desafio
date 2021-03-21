@@ -17,7 +17,6 @@ public class ClienteService {
     ClienteRepository clienteRepository;
 
     public List<Cliente> consultarClientes() {
-        System.out.println("CHAMOU");
         return clienteRepository.findAll();
     }
 
@@ -25,8 +24,14 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public Cliente atualizarCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public Cliente atualizarCliente(Cliente cliente) throws Exception {
+        if (clienteRepository.findById(cliente.getId()).isPresent()) {
+            validarCliente(cliente);
+            return clienteRepository.save(cliente);
+        } else {
+            throw new Exception("Este registro não existe no banco.");
+        }
+
     }
 
     private void validarCliente(Cliente cliente) throws Exception {
@@ -42,7 +47,14 @@ public class ClienteService {
             throw new Exception("CPF inválido.");
         }
 
-        if (clienteRepository.findByCpf(cliente.getCpf()).size() > 0) {
+        // Como vou enviar apenas a API para correção, a regra de CPF vai ser
+        // implementada direto na API
+        // a pesquisa muda quando estou editando o cpf, pois preciso ignorar o registro
+        // que ja existente no banco
+        List<Cliente> cpfCadastrados = UtilValidador.isValidString(cliente.getId())
+                ? clienteRepository.findByCpfAndIdNot(cliente.getCpf(), cliente.getId())
+                : clienteRepository.findByCpf(cliente.getCpf());
+        if (cpfCadastrados.size() > 0) {
             throw new Exception("CPF já utilizado.");
         }
 
