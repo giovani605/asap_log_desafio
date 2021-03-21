@@ -1,13 +1,16 @@
 package com.example.asap_log_deasafio.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.example.asap_log_deasafio.entity.Apolice;
+import com.example.asap_log_deasafio.entity.Cliente;
+import com.example.asap_log_deasafio.helpers.ApoliceStatus;
 import com.example.asap_log_deasafio.repository.ApoliceRepository;
-import com.example.asap_log_deasafio.util.UtilValidador;
+import com.example.asap_log_deasafio.util.UtilGeral;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class ApoliceService {
     ApoliceRepository apoliceRepository;
 
     @Autowired
-    SequenceService sequenceService;
+    ClienteService clienteService;
 
     public List<Apolice> consultarApolices() {
         return apoliceRepository.findAll();
@@ -29,11 +32,37 @@ public class ApoliceService {
         return apoliceRepository.findById(id);
     }
 
+    public ApoliceStatus consultarResultadoApolice(String id) throws Exception {
+        Optional<Apolice> apoliceOpt = apoliceRepository.findById(id);
+        if (apoliceOpt.isPresent()) {
+            return calcularStatusApolice(apoliceOpt.get());
+        } else {
+            throw new Exception("Insira um numero de apolice valido.");
+        }
+    }
+
+    private ApoliceStatus calcularStatusApolice(Apolice apolice) {
+        ApoliceStatus apoliceStatus = new ApoliceStatus();
+
+        apoliceStatus.setApolice(apolice);
+
+        Date dataAtual = new Date();
+        apoliceStatus.setApoliceVencida(dataAtual.after(apolice.getDataFim()));
+
+        apoliceStatus.setDiasVencidos(UtilGeral.calcularDiferencaDias(dataAtual, apolice.getDataFim()));
+
+        // tambem adiciona os dias pra o vencimento
+        apoliceStatus.setDiasParaVencimentos(apoliceStatus.getDiasVencidos() * -1);
+
+        return apoliceStatus;
+    }
+
     public Apolice atualizarApolice(Apolice apolice) throws Exception {
         Optional<Apolice> apoliceOpt = apoliceRepository.findById(apolice.getId());
         if (apoliceOpt.isPresent()) {
             validarApolice(apolice);
             // não deixa o usuario editar esse numero de apolice
+            prepararApolice(apolice);
             apolice.setNumeroApolice(apoliceOpt.get().getNumeroApolice());
             return apoliceRepository.save(apolice);
         } else {
@@ -44,21 +73,28 @@ public class ApoliceService {
 
     private void validarApolice(Apolice apolice) throws Exception {
 
-        if (!UtilValidador.isValidString(apolice.getDataFim())) {
+        if (!UtilGeral.isValidString(apolice.getDataFim())) {
             throw new Exception("Data fim inválida.");
         }
-        if (!UtilValidador.isValidString(apolice.getDataInicio())) {
+        if (!UtilGeral.isValidString(apolice.getDataInicio())) {
             throw new Exception("Data inicio inválida.");
         }
 
-        if (!UtilValidador.isValidString(apolice.getValor())) {
+        if (!UtilGeral.isValidString(apolice.getValor())) {
             throw new Exception("Valor obrigatório.");
         }
 
-        if (!UtilValidador.isValidString(apolice.getPlaca())) {
+        if (!UtilGeral.isValidString(apolice.getPlaca())) {
             throw new Exception("Placa obrigatória.");
         }
 
+        if (!UtilGeral.isValidString(apolice.getIdCliente())) {
+            throw new Exception("Infome o cliente dono da apolice.");
+        }
+
+        if (apolice.getDataFim().before(apolice.getDataInicio())) {
+            throw new Exception("Data inicio deve ser menor que data final.");
+        }
     }
 
     private void gerarNumeroApolice(Apolice apolice) {
@@ -70,9 +106,22 @@ public class ApoliceService {
 
     }
 
+    private void prepararApolice(Apolice apolice) throws Exception {
+        if (apolice.getId() != null) {
+            // gera apenas o numero da apolice se for um registro novo
+            gerarNumeroApolice(apolice);
+        }
+        Optional<Cliente> clienteOpt = clienteService.consultarClienteId(apolice.getIdCliente());
+        if (clienteOpt.isPresent()) {
+            apolice.setDono(clienteOpt.get());
+        } else {
+            throw new Exception("Cliente da apolice não encontrado.");
+        }
+    }
+
     public Apolice salvarApolice(Apolice apolice) throws Exception {
         validarApolice(apolice);
-        gerarNumeroApolice(apolice);
+        prepararApolice(apolice);
         return apoliceRepository.save(apolice);
     }
 

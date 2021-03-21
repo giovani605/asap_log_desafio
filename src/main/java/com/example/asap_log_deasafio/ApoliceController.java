@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.asap_log_deasafio.entity.Apolice;
+import com.example.asap_log_deasafio.helpers.ApoliceStatus;
 import com.example.asap_log_deasafio.service.ApoliceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,18 @@ public class ApoliceController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("consultar/{id}")
+    public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") String id) {
+        try {
+            ApoliceStatus apolice = apoliceService.consultarResultadoApolice(id);
+            return new ResponseEntity<>(apolice, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping

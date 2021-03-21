@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.example.asap_log_deasafio.entity.Cliente;
 import com.example.asap_log_deasafio.repository.ClienteRepository;
-import com.example.asap_log_deasafio.util.UtilValidador;
+import com.example.asap_log_deasafio.util.UtilGeral;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,15 +35,15 @@ public class ClienteService {
     }
 
     private void validarCliente(Cliente cliente) throws Exception {
-        if (!UtilValidador.isValidString(cliente.getNome())) {
+        if (!UtilGeral.isValidString(cliente.getNome())) {
             throw new Exception("Nome do cliente obrigatório.");
         }
 
-        if (!UtilValidador.isValidString(cliente.getCpf())) {
+        if (!UtilGeral.isValidString(cliente.getCpf())) {
             throw new Exception("CPF obrigatório.");
         }
 
-        if (UtilValidador.isCPF(cliente.getCpf())) {
+        if (UtilGeral.isCPF(cliente.getCpf())) {
             throw new Exception("CPF inválido.");
         }
 
@@ -51,18 +51,18 @@ public class ClienteService {
         // implementada direto na API
         // a pesquisa muda quando estou editando o cpf, pois preciso ignorar o registro
         // que ja existente no banco
-        List<Cliente> cpfCadastrados = UtilValidador.isValidString(cliente.getId())
+        List<Cliente> cpfCadastrados = UtilGeral.isValidString(cliente.getId())
                 ? clienteRepository.findByCpfAndIdNot(cliente.getCpf(), cliente.getId())
                 : clienteRepository.findByCpf(cliente.getCpf());
         if (cpfCadastrados.size() > 0) {
             throw new Exception("CPF já utilizado.");
         }
 
-        if (!UtilValidador.isValidString(cliente.getCidade())) {
+        if (!UtilGeral.isValidString(cliente.getCidade())) {
             throw new Exception("Cidade obrigatório.");
         }
 
-        if (!UtilValidador.isValidString(cliente.getUf())) {
+        if (!UtilGeral.isValidString(cliente.getUf())) {
             throw new Exception("Estado obrigatório.");
         }
 

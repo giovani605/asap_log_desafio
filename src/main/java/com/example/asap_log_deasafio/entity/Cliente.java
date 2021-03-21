@@ -2,7 +2,6 @@ package com.example.asap_log_deasafio.entity;
 
 import java.io.Serializable;
 
-import org.springframework.core.serializer.Serializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

@@ -1,8 +1,16 @@
 package com.example.asap_log_deasafio.util;
 
+import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.concurrent.TimeUnit;
 
-public class UtilValidador {
+public class UtilGeral {
+
+    public static Long calcularDiferencaDias(Date data1, Date data2) {
+
+        Long diff = data1.getTime() - data2.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
 
     public static boolean isCPF(String CPF) {
         // considera-se erro CPF's formados por uma sequencia de numeros iguais
