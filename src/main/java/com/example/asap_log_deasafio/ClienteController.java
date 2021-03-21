@@ -30,7 +30,7 @@ class ClienteController {
     ClienteService clienteService;
 
     @ApiOperation(value = "consulta todos os clientes")
-    @GetMapping("/lista")
+    @GetMapping("")
     public ResponseEntity<List<Cliente>> getAll() {
         try {
             System.out.println("LISTAR TUDO");
@@ -57,20 +57,13 @@ class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody Cliente item) {
+    public ResponseEntity<Cliente> create(@RequestBody Cliente item) throws Exception {
         try {
             Cliente savedItem = clienteService.salvarCliente(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+            throw e;
         }
-    }
-
-    private void validarCliente(Cliente cliente) throws Exception {
-        if (cliente.getNome() == null) {
-            throw new Exception("Nome do cliente obrigatório.");
-        }
-
     }
 
     @PutMapping("")
