@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/apolices")
@@ -45,7 +45,7 @@ public class ApoliceController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Apolice> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<Apolice> getById(@PathVariable("id") String id) {
         Optional<Apolice> existingItemOptional = apoliceService.consultarApoliceId(id);
 
         if (existingItemOptional.isPresent()) {
@@ -56,7 +56,7 @@ public class ApoliceController {
     }
 
     @PostMapping
-    public ResponseEntity<Apolice> create(@RequestBody Apolice item) throws Exception {
+    public ResponseEntity<Apolice> createApolice(@RequestBody Apolice item) throws Exception {
         try {
             Apolice savedItem = apoliceService.salvarApolice(item);
             return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
@@ -76,7 +76,7 @@ public class ApoliceController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) {
         try {
             apoliceService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

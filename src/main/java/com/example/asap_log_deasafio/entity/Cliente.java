@@ -1,5 +1,8 @@
 package com.example.asap_log_deasafio.entity;
 
+import java.io.Serializable;
+
+import org.springframework.core.serializer.Serializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,16 +10,20 @@ import lombok.Data;
 
 @Data
 @Document(collection = "Clientes")
-public class Cliente {
+public class Cliente implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2872995689699638240L;
 
     @Id
-    String id;
+    private String id;
 
-    String nome;
+    private String nome;
 
-    String cpf;
+    private String cpf;
 
-    String cidade;
+    private String cidade;
 
-    String uf;
+    private String uf;
 }

@@ -65,6 +65,14 @@ public class UtilValidador {
                 + CPF.substring(9, 11));
     }
 
+    public static boolean isValidString(Object value) {
+        if (value == null) {
+            return false;
+        } else {
+            return isValidString(value.toString());
+        }
+    }
+
     public static boolean isValidString(String value) {
         return value != null || ("").equals(value);
     }
