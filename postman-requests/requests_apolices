@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "bba91cea-6d5d-41f2-984b-a7400cffafa0",
+		"name": "Apolices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consultar Apólices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/apolices",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"apolices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Salvar apolice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"placa\": \"AAA1111\",\r\n    \"valor\": 1000,\r\n    \"dataFim\": \"2021-01-01 23:00:00\",\r\n    \"dataInicio\": \"2020-01-01 23:00:00\",\r\n    \"idCliente\" : \"6057a4460d4afa560d0c796c\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/apolices",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"apolices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar apolice",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"6057e6793b20c531410b0385\",\r\n    \"placa\": \"AAA1111\",\r\n    \"valor\": 1000,\r\n    \"dataFim\": \"2021-01-01 23:00:00\",\r\n    \"dataInicio\": \"2020-01-01 23:00:00\",\r\n    \"idCliente\" : \"6057a4460d4afa560d0c796c\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/apolices",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"apolices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover apólice",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/apolices/6057c35733ba5239907b42c9",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"apolices",
+						"6057c35733ba5239907b42c9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Status apólice",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/apolices/consultar/29968428",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"apolices",
+						"consultar",
+						"29968428"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -8,3 +8,5 @@ A Api consiste em um CRUD de clientes e apólices de seguro. além disso o endpo
 As verificações de dados unicos foram implementadas diretamente na API para permitir maior portabilidade e independência de um banco pré-configurado.
 
 A documentação da api fica disponivel em http://localhost:8080/swagger-ui/index.html
+
+Para facilitar a correção, disponibilizei na pasta postman-requests, os requests que usei para constultar a API pelo Postman.
