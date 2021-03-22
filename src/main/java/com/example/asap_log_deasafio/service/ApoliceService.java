@@ -32,8 +32,8 @@ public class ApoliceService {
         return apoliceRepository.findById(id);
     }
 
-    public ApoliceStatus consultarResultadoApolice(String id) throws Exception {
-        Optional<Apolice> apoliceOpt = apoliceRepository.findById(id);
+    public ApoliceStatus consultarResultadoApolice(Long numeroApolice) throws Exception {
+        Optional<Apolice> apoliceOpt = apoliceRepository.findByNumeroApolice(numeroApolice);
         if (apoliceOpt.isPresent()) {
             return calcularStatusApolice(apoliceOpt.get());
         } else {
@@ -102,12 +102,12 @@ public class ApoliceService {
         // Gera o numero de apolice aleatorio e testa se está disponivel
         do {
             apolice.setNumeroApolice(ThreadLocalRandom.current().nextLong(10, 100000000));
-        } while (apoliceRepository.findByNumeroApolice(apolice.getNumeroApolice()).size() > 0);
+        } while (apoliceRepository.findByNumeroApolice(apolice.getNumeroApolice()).isPresent());
 
     }
 
     private void prepararApolice(Apolice apolice) throws Exception {
-        if (apolice.getId() != null) {
+        if (apolice.getId() == null) {
             // gera apenas o numero da apolice se for um registro novo
             gerarNumeroApolice(apolice);
         }

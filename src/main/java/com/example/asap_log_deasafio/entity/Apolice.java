@@ -24,9 +24,6 @@ public class Apolice implements Serializable {
     @Id
     private String id;
 
-    @Transient
-    public static final String SEQUENCE_NAME = "apolices_sequence";
-
     private Long numeroApolice;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

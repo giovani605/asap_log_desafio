@@ -53,8 +53,8 @@ public class ApoliceController {
     }
 
     @GetMapping("consultar/{id}")
-    public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") String id) throws Exception {
-        ApoliceStatus apolice = apoliceService.consultarResultadoApolice(id);
+    public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") Long numeroApolice) throws Exception {
+        ApoliceStatus apolice = apoliceService.consultarResultadoApolice(numeroApolice);
         return new ResponseEntity<>(apolice, HttpStatus.OK);
     }
 
