@@ -16,7 +16,7 @@ configurations {
 
 repositories {
 	mavenCentral()
-	 jcenter()
+	jcenter()
 }
 
 dependencies {
@@ -31,4 +31,16 @@ dependencies {
 
 test {
 	// useJUnitPlatform()
+}
+apply plugin: 'java'
+jar{
+	manifest {
+		attributes(
+			'Main-Class': 'com.example.asap_log_deasafio.AsapLogDeasafioApplication'
+		)
+  } 
+}
+
+springBoot { 
+    executable = true 
 }
