@@ -30,7 +30,7 @@ public class ApoliceController {
     @Autowired
     ApoliceService apoliceService;
 
-    @ApiOperation(value = "consulta todos os clientes")
+    @ApiOperation(value = "consulta todas as apólices.")
     @GetMapping("")
     public ResponseEntity<List<Apolice>> getAll() throws Exception {
         List<Apolice> items = apoliceService.consultarApolices();
@@ -41,6 +41,7 @@ public class ApoliceController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "consulta uma apólice pelo Id.")
     @GetMapping("{id}")
     public ResponseEntity<Apolice> getById(@PathVariable("id") String id) throws Exception {
         Optional<Apolice> existingItemOptional = apoliceService.consultarApoliceId(id);
@@ -52,24 +53,28 @@ public class ApoliceController {
         }
     }
 
+    @ApiOperation(value = "Consulta se a apólice está valida e os dias para o vencimento.")
     @GetMapping("consultar/{id}")
     public ResponseEntity<ApoliceStatus> gerarRelatorio(@PathVariable("id") Long numeroApolice) throws Exception {
         ApoliceStatus apolice = apoliceService.consultarResultadoApolice(numeroApolice);
         return new ResponseEntity<>(apolice, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Insere uma apólice nova.")
     @PostMapping
     public ResponseEntity<Apolice> createApolice(@RequestBody Apolice item) throws Exception {
         Apolice savedItem = apoliceService.salvarApolice(item);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @ApiOperation(value = "Atualiza uma apólice exitente.")
+    @PutMapping
     public ResponseEntity<Apolice> update(@RequestBody Apolice cliente) throws Exception {
         Apolice savedItem = this.apoliceService.atualizarApolice(cliente);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Remove uma apólice.")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) throws Exception {
         apoliceService.deleteById(id);

@@ -29,7 +29,7 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
-    @ApiOperation(value = "consulta todos os clientes")
+    @ApiOperation(value = "Consulta todas os clientes.")
     @GetMapping("")
     public ResponseEntity<List<Cliente>> getAll() throws Exception {
         List<Cliente> items = clienteService.consultarClientes();
@@ -38,6 +38,7 @@ public class ClienteController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Consulta um cliente pelo Id.")
     @GetMapping("{id}")
     public ResponseEntity<Cliente> getById(@PathVariable("id") String id) throws Exception {
         Optional<Cliente> existingItemOptional = clienteService.consultarClienteId(id);
@@ -48,18 +49,21 @@ public class ClienteController {
         }
     }
 
+    @ApiOperation(value = "Insere um cliente novo.")
     @PostMapping
     public ResponseEntity<Cliente> create(@RequestBody Cliente item) throws Exception {
         Cliente savedItem = clienteService.salvarCliente(item);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @ApiOperation(value = "Atualiza um cliente existente.")
+    @PutMapping
     public ResponseEntity<Cliente> update(@RequestBody Cliente cliente) throws Exception {
         Cliente savedItem = this.clienteService.atualizarCliente(cliente);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Remove um cliente.")
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") String id) throws Exception {
         clienteService.deleteById(id);

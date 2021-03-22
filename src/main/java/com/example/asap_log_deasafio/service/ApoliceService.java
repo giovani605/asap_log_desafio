@@ -88,6 +88,10 @@ public class ApoliceService {
             throw new Exception("Placa obrigatória.");
         }
 
+        if (!UtilGeral.isPlacaValid(apolice.getPlaca())) {
+            throw new Exception("Placa inválida.");
+        }
+
         if (!UtilGeral.isValidString(apolice.getIdCliente())) {
             throw new Exception("Infome o cliente dono da apolice.");
         }
